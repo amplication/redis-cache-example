@@ -57,7 +57,7 @@ import { AuthModule } from "./auth/auth.module";
       port: process.env.REDIS_PORT,
       username: process.env.REDIS_USERNAME,
       password: process.env.REDIS_PASSWORD,
-      ttl: parseInt(process.env.REDIS_TTL ? process.env.REDIS_TTL : "5"),
+      ttl: parseInt(process.env.REDIS_TTL ? process.env.REDIS_TTL : "3600"),
 
       max: parseInt(
         process.env.REDIS_MAX_REQUESTS_CACHED
