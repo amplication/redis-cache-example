@@ -1,6 +1,7 @@
-import { Module, Scope } from "@nestjs/common";
+import { Module, Scope, CacheModule } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { MorganInterceptor, MorganModule } from "nest-morgan";
+import * as redisStore from "cache-manager-redis-store";
 import { UserModule } from "./user/user.module";
 import { OrderModule } from "./order/order.module";
 import { CustomerModule } from "./customer/customer.module";
@@ -48,6 +49,21 @@ import { AuthModule } from "./auth/auth.module";
       },
       inject: [ConfigService],
       imports: [ConfigModule],
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      username: process.env.REDIS_USERNAME,
+      password: process.env.REDIS_PASSWORD,
+      ttl: parseInt(process.env.REDIS_TTL ? process.env.REDIS_TTL : "5"),
+
+      max: parseInt(
+        process.env.REDIS_MAX_REQUESTS_CACHED
+          ? process.env.REDIS_MAX_REQUESTS_CACHED
+          : "100"
+      ),
     }),
   ],
   providers: [
